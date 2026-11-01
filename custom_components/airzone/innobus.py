@@ -141,7 +141,7 @@ class InnobusZone(ClimateEntity):
         temperature = kwargs.get(ATTR_TEMPERATURE)
         if temperature is None:
             return None
-        self._airzone_zone.set_signal_temperature_value(round(float(temperature), 1))
+        self._airzone_zone.signal_temperature_value = round(float(temperature), 1)
 
     @property
     def preset_mode(self) -> Optional[str]:
@@ -196,12 +196,13 @@ class InnobusZone(ClimateEntity):
                  key, value in self._available_attributes.items()})
         self._attr_max_temp = self._airzone_zone.max_temp
         self._attr_min_temp = self._airzone_zone.min_temp
-        _LOGGER.debug(str(self._airzone_zone))
+        _LOGGER.debug("%s", self._airzone_zone)
 
     @staticmethod
     def _extract_value_from_attribute(state, attribute):
-        func = getattr(state, attribute)
-        value = func()
+        value = getattr(state, attribute)
+        if callable(value):
+            value = value()
         if isinstance(value, Enum):
             return value.value
         return value
@@ -316,4 +317,4 @@ class InnobusMachine(ClimateEntity):
 
     async def async_update(self):
         self._airzone_machine._retrieve_machine_state()
-        _LOGGER.debug(str(self._airzone_machine))
+        _LOGGER.debug("%s", self._airzone_machine)

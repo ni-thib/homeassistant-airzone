@@ -48,7 +48,7 @@ AVAILABLE_ATTRIBUTES_ZONE = {
     ATTR_TACTO_CONNECTED: 'is_tacto_connected_cz',
     ATTR_IS_AUTOMATIC_MODE: 'is_automatic_mode',
     ATTR_IS_TACTO_ON: 'is_tacto_on',
-    ATTR_DIF_CURRENT_TEMP: 'get_dif_current_temp'
+    ATTR_DIF_CURRENT_TEMP: 'dif_current_temp'
 }
 
 ZONE_HVAC_MODES = [HVACMode.AUTO, HVACMode.HEAT_COOL,  HVACMode.OFF]
