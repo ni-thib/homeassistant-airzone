@@ -317,6 +317,14 @@ class InnobusMachine(ClimateEntity):
     def unique_id(self):
         return self._airzone_machine.unique_id
 
+    @property
+    def extra_state_attributes(self):
+        """Expose the raw machine registers, without the clock that changes every minute."""
+        registers = self._airzone_machine.machine_state
+        if registers is None:
+            return None
+        return {'registers': {str(i): value for i, value in enumerate(registers) if i != 4}}
+
 
     async def async_update(self):
         self._airzone_machine._retrieve_machine_state()
