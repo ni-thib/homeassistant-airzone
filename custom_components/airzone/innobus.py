@@ -114,16 +114,19 @@ class InnobusZone(ClimateEntity):
         """Return the current running hvac operation."""
         op_mode = self._airzone_zone._machine.operation_mode.name
 
+        if op_mode == 'STOP' or self.hvac_mode == HVACMode.OFF:
+            return HVACAction.OFF
+
         if self._airzone_zone.is_floor_active():
             return HVACAction.HEATING
 
         if self._airzone_zone.is_requesting_air():
-            if op_mode == 'HOT_AIR':
-                return HVACAction.HEATING
-            return HVACAction.COOLING
+            if op_mode == 'COLD':
+                return HVACAction.COOLING
+            if op_mode == 'AIR':
+                return HVACAction.FAN
+            return HVACAction.HEATING
 
-        if op_mode == 'STOP':
-            return HVACAction.OFF
         return HVACAction.IDLE
 
 
